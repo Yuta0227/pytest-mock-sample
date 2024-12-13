@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends
 from dependency_injector.wiring import Provide, inject
-from app.services.get_post_service import GetPostService
+from fastapi import APIRouter, Depends
+
+from app.api_schemas.get_post_schema import (GetPostRequest, GetPostResponse,
+                                             PostSchema)
 from app.core.container import Container
-from app.api_schemas.get_post_schema import GetPostRequest, GetPostResponse
+from app.services.get_post_service import GetPostService
 
 router = APIRouter()
 
@@ -14,5 +16,8 @@ def get_post(
     service: GetPostService = Depends(Provide[Container.get_post_service]),
 ) -> GetPostResponse:
     if post := service.get_post(get_post_request.post_id):
-        return GetPostResponse(result=True, post=post)
+        post_schema = PostSchema(
+            id=post.id, title=post.title, description=post.description
+        )
+        return GetPostResponse(result=True, post=post_schema)
     return GetPostResponse(result=False, post=None)

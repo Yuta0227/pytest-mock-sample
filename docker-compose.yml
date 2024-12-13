@@ -6,11 +6,57 @@ services:
     volumes:
       - ./app:/workspace/app:cached
       - ./scripts:/workspace/scripts:cached
+      - ./migrations:/workspace/migrations:cached
       - ./.vscode:/workspace/.vscode:cached
+      - ./venv:/workspace/.venv:cached
+      - ./docker/api/requirements.txt:/workspace/requirements.txt:cached
+      # - .:/workspace:cached
     build:
       context: ./docker/api
       dockerfile: Dockerfile
     working_dir: /workspace/scripts
-    command: bash -c "./run.sh"
+    command: bash -c "pip install --no-cache-dir --upgrade -r /workspace/requirements.txt && ./run.sh"
     ports:
       - 8000:8080
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    networks:
+      - mock_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mock_db
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - mock_network
+
+  atlas:
+    build:
+      context: ./docker/atlas
+      dockerfile: Dockerfile
+    container_name: "atlas"
+    volumes:
+      - ./migrations:/migrations
+      - ./atlas.hcl:/atlas.hcl
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - mock_network
+networks:
+  mock_network:
+    name: mock_network
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

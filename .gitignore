@@ -4,3 +4,5 @@ app/controllers/__pycache__/*
 app/core/__pycache__/*
 app/repositories/__pycache__/*
 app/services/__pycache__/*
+app/models/__pycache__/*
+.env

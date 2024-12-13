@@ -1,17 +1,18 @@
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
-
-class Post(BaseModel):
-    id: int
-    title: str
-    description: str
+from app.api_schemas.get_post_schema import PostSchema
+from app.models.post import PostTable
 
 
 class PostRepository:
-    def get_post(self, post_id) -> Post:
-        if post_id == 0:
-            return None
-        return Post(id=post_id, title="Post title", description="Post description")
+    def __init__(self, db: Session):
+        self.db = db
+
+    def get_post(self, post_id):
+        if post := self.db.query(PostTable).filter(PostTable.id == post_id).first():
+            return post
+        return None
 
     def create_post(self, post):
         return {"status": "created", "post": post}

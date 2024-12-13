@@ -1,6 +1,12 @@
-from pydantic import BaseModel
 from typing import Optional
-from app.repositories.post_repository import Post
+
+from pydantic import BaseModel
+
+
+class PostSchema(BaseModel):
+    id: int
+    title: str
+    description: str
 
 
 class GetPostRequest(BaseModel):
@@ -9,4 +15,4 @@ class GetPostRequest(BaseModel):
 
 class GetPostResponse(BaseModel):
     result: bool
-    post: Optional[Post] = None
+    post: Optional[PostSchema] = None
