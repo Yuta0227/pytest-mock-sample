@@ -14,4 +14,6 @@
 2. atlas migrate apply --url mysql://root:password@mysql_test:3306/test_mock_db
 3. exit
 4. docker compose exec api bash
-2. pytest -vvv --cov=app/ --cov-report=html -s ./tests > output.txt
+5. pytest -vvv --cov=app/ --cov-report=html -s ./tests > output.txt
+
+<!-- TODO: implement poetry -->

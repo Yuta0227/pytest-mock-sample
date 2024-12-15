@@ -17,5 +17,6 @@ class PostTable(Base):
 
     user = relationship("UserTable", back_populates="posts")
 
-    def get_columns(self):
-        return [column.key for column in self.__table__.columns]
+    @classmethod
+    def test_public_post_data(cls):
+        return cls(id=1, title="test", description="test", user_id=1, is_private=False)

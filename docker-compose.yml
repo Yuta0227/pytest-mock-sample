@@ -8,8 +8,8 @@ services:
     build:
       context: ./docker/api
       dockerfile: Dockerfile
-    working_dir: /workspace/scripts
-    command: bash -c "pip install --no-cache-dir --upgrade -r /workspace/requirements.txt && ./run.sh"
+    working_dir: /workspace
+    command: bash -c "pip install --no-cache-dir --upgrade -r /workspace/requirements.txt && ./scripts/run.sh"
     ports:
       - 8000:8080
     env_file:

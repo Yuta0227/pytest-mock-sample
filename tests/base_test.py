@@ -2,10 +2,12 @@ import os
 
 import pytest
 from dotenv import load_dotenv
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 
 from app.core.db_connect import Base
+from app.core.main import app
 
 
 class BaseTest:
@@ -25,7 +27,12 @@ class BaseTest:
         cls.db = cls.SessionLocal()
 
     @classmethod
+    def create_client(cls):
+        cls.client = TestClient(app)
+
+    @classmethod
     def setup_class(cls):
+        cls.create_client()
         cls._create_db()
         cls._delete_data()
         cls._insert_data()
