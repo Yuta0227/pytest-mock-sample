@@ -1,7 +1,6 @@
 FROM python:3.9-slim
 
 WORKDIR /workspace
-COPY requirements.txt .
 
 # Install build tools and dependencies
 RUN apt-get update && apt-get install -y \
@@ -11,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
     
-RUN pip install -U pip \
-    && pip install --no-cache-dir --upgrade -r requirements.txt
+# RUN pip install -U pip \
+#     && pip install --no-cache-dir --upgrade -r requirements.txt
 RUN pip install pipreqs
 CMD ["./run.sh"]

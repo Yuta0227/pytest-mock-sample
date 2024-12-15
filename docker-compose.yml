@@ -4,13 +4,7 @@ services:
   api:
     container_name: "api"
     volumes:
-      - ./app:/workspace/app:cached
-      - ./scripts:/workspace/scripts:cached
-      - ./migrations:/workspace/migrations:cached
-      - ./.vscode:/workspace/.vscode:cached
-      - ./venv:/workspace/.venv:cached
-      - ./docker/api/requirements.txt:/workspace/requirements.txt:cached
-      # - .:/workspace:cached
+      - .:/workspace:cached
     build:
       context: ./docker/api
       dockerfile: Dockerfile
@@ -20,6 +14,7 @@ services:
       - 8000:8080
     env_file:
       - .env
+      - .env.test
     depends_on:
       - mysql
     networks:
@@ -40,7 +35,21 @@ services:
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - mock_network
-
+  mysql_test:
+    image: mysql:8.0
+    container_name: "mysql_test"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_mock_db
+    env_file:
+      - .env.test
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_test_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - mock_network
   atlas:
     build:
       context: ./docker/atlas
@@ -52,6 +61,7 @@ services:
     command: ["tail", "-f", "/dev/null"]
     networks:
       - mock_network
+  
 networks:
   mock_network:
     name: mock_network
@@ -59,4 +69,6 @@ networks:
 
 volumes:
   mysql_data:
+    driver: local
+  mysql_test_data:
     driver: local

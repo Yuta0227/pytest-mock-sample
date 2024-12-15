@@ -1,3 +1,7 @@
-h1:JM+3opVlt6Dht1uLjH6pByOetZZ+iqhTSdR+Wh0SEdc=
+h1:JzQltT9a22itDEEVpOdXqlCli5tDUd11cHmYjfJZzWU=
 20241213134656_create_posts_table.sql h1:N1dGz59ssWJcqqoerWU2YdKHgE5+DDh/bKTN2OXctXY=
 20241213135046_insert_posts_table.sql h1:vHfKEkDLANg/kNLxoVHgV2fTPlVzwF96ynLLUhFs/Lc=
+20241214033320_create_users_table.sql h1:6r48o54kBV/U6jqwfgel1wJuvcx4JV3fCyHPzrpgI90=
+20241214033331_insert_users_table.sql h1:PpBgSkSH8eYA44q91OMY2TdroqdLYRgzuduSGCWDN7I=
+20241214033339_alter_posts_table.sql h1:peGNcQwH+3O28GK37ouIHsYR9Tv8a2Ni7RMj+MM3Iro=
+20241214095121_add_private_column_to_posts_table.sql h1:oMwfTUrBaE6cR/ROjEF0wAVRnnCTvzzYhsLcIuh5wB4=

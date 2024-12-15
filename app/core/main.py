@@ -1,7 +1,10 @@
+import os
 from contextlib import asynccontextmanager
 
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 
 from app.controllers import get_post_controller
 from app.core.container import Container, wire_controllers
@@ -14,7 +17,7 @@ async def lifespan(app: FastAPI):
     # Startup event
     try:
         with engine.connect() as connection:
-            connection.execute("SELECT 1")
+            connection.execute(text("SELECT 1"))
         print("Database connection successful")
     except Exception as e:
         # TODO: this is where it fails
@@ -24,6 +27,11 @@ async def lifespan(app: FastAPI):
     # Shutdown event (if needed)
     print("Application shutdown")
 
+
+if "PYTEST_CURRENT_TEST" in os.environ:
+    load_dotenv(dotenv_path=".env.test")
+else:
+    load_dotenv(dotenv_path=".env")
 
 app = FastAPI(lifespan=lifespan)
 
