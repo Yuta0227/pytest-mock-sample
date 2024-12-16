@@ -18,12 +18,23 @@ class UserTable(Base):
     posts = relationship("PostTable", back_populates="user")
 
     @classmethod
-    def test_not_login_user_data(cls):
+    def test_not_login_user1_data(cls):
         return cls(
             id=1,
             name="test",
-            email="test",
-            password="test@example.com",
+            email="test@example.com",
+            password="password",
             created_at=get_datetime_now_db_format(),
             is_login=False,
+        )
+
+    @classmethod
+    def test_login_user2_data(cls):
+        return cls(
+            id=2,
+            name="test",
+            email="test@example.com",
+            password="password",
+            created_at=get_datetime_now_db_format(),
+            is_login=True,
         )

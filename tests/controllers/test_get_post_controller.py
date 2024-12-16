@@ -17,15 +17,17 @@ def mock_get_post_service():
 
 
 def test_get_post_succeeds(mock_get_post_service):
-    mock_get_post_service.get_post_info.return_value = PostTable.test_public_post_data()
+    mock_get_post_service.get_post_info.return_value = (
+        PostTable.test_public_post_by_user1_data()
+    )
 
     request = GetPostRequest(post_id=1, user_id=1)
     response = get_post_info(get_post_request=request, service=mock_get_post_service)
     assert response == GetPostResponse(
         result=True,
         post=GetPostSchema(
-            title=PostTable.test_public_post_data().title,
-            description=PostTable.test_public_post_data().description,
+            title=PostTable.test_public_post_by_user1_data().title,
+            description=PostTable.test_public_post_by_user1_data().description,
         ),
     )
 
@@ -42,14 +44,17 @@ class TestGetPostController(BaseTest):
     @classmethod
     def _insert_data(cls):
         cls.db.add_all(
-            [UserTable.test_not_login_user_data(), PostTable.test_public_post_data()]
+            [
+                UserTable.test_not_login_user1_data(),
+                PostTable.test_public_post_by_user1_data(),
+            ]
         )
         cls.db.commit()
 
     @classmethod
     def test_e2e(cls):
-        post_id = str(PostTable.test_public_post_data().id)
-        user_id = str(UserTable.test_not_login_user_data().id)
+        post_id = str(PostTable.test_public_post_by_user1_data().id)
+        user_id = str(UserTable.test_not_login_user1_data().id)
         response = cls.client.get(
             "/posts/" + post_id, params={"post_id": post_id, "user_id": user_id}
         )
@@ -57,7 +62,7 @@ class TestGetPostController(BaseTest):
         assert response.json() == {
             "result": True,
             "post": {
-                "title": PostTable.test_public_post_data().title,
-                "description": PostTable.test_public_post_data().description,
+                "title": PostTable.test_public_post_by_user1_data().title,
+                "description": PostTable.test_public_post_by_user1_data().description,
             },
         }

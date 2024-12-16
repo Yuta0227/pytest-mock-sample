@@ -18,5 +18,9 @@ class PostTable(Base):
     user = relationship("UserTable", back_populates="posts")
 
     @classmethod
-    def test_public_post_data(cls):
+    def test_public_post_by_user1_data(cls):
         return cls(id=1, title="test", description="test", user_id=1, is_private=False)
+
+    @classmethod
+    def test_private_post_by_user1_data(cls):
+        return cls(id=2, title="test", description="test", user_id=1, is_private=True)

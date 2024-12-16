@@ -14,20 +14,27 @@ class TestPostRepository(BaseTest):
     def _insert_data(cls):
         cls.db.add_all(
             [
-                PostTable.test_public_post_data(),
-                UserTable.test_not_login_user_data(),
+                PostTable.test_public_post_by_user1_data(),
+                UserTable.test_not_login_user1_data(),
             ]
         )
         cls.db.commit()
 
     @classmethod
     def test_get_existing_post(cls):
-        response = cls.post_repository.get_post(PostTable.test_public_post_data().id)
-        assert response.id == PostTable.test_public_post_data().id
-        assert response.title == PostTable.test_public_post_data().title
-        assert response.description == PostTable.test_public_post_data().description
-        assert response.user_id == PostTable.test_public_post_data().user_id
-        assert response.is_private == PostTable.test_public_post_data().is_private
+        response = cls.post_repository.get_post(
+            PostTable.test_public_post_by_user1_data().id
+        )
+        assert response.id == PostTable.test_public_post_by_user1_data().id
+        assert response.title == PostTable.test_public_post_by_user1_data().title
+        assert (
+            response.description
+            == PostTable.test_public_post_by_user1_data().description
+        )
+        assert response.user_id == PostTable.test_public_post_by_user1_data().user_id
+        assert (
+            response.is_private == PostTable.test_public_post_by_user1_data().is_private
+        )
 
     @classmethod
     def test_get_non_existing_post(cls):
